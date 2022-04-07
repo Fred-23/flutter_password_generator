@@ -1,6 +1,19 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
+//23 caractères = 2 Majuscules , 2 mininuscules , 6 chiffres, 2 signes de ponctuations, 3 caractères spéciaux, et 8 lettres
 void main() {
+  //print(random);
+  //debugPrint(random.nextBool()); //true or false
+  //debugPrint(random.nextInt(75)); // number between 0 - 75
+  //debugPrint(random.nextDouble()); // double value 0.0 to 1.0
+  //var leftTop = const Point(20, 50);
+  //var rightBottom = const Point(300, 600);
+  //var rectangle = Rectangle.fromPoints(leftTop, rightBottom);
+  // debugPrint(rectangle.left); // 20
+  // debugPrint(rectangle.top); // 50
+  // debugPrint(rectangle.right); // 300
+  // debugPrint(rectangle.bottom); // 600
   runApp(const MyApp());
 }
 
@@ -14,7 +27,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
-        //
+
         // Try running your application with "flutter run". You'll see the
         // application has a blue toolbar. Then, without quitting the app, try
         // changing the primarySwatch below to Colors.green and then invoke
@@ -48,6 +61,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  //var random = Random();
   int _counter = 0;
 
   void _incrementCounter() {
@@ -58,6 +72,19 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+    });
+  }
+
+  void randomNumber() {
+    setState(() {
+      var random = Random();
+
+      int min = 10;
+
+      int max = 200;
+
+      int result = min + random.nextInt(max - min);
+      _counter = result;
     });
   }
 
@@ -93,6 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
+
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
@@ -106,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: randomNumber, // _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
