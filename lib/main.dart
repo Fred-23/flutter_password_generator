@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:flutter/services.dart';
 
-//23 caractères = 2 Majuscules , 2 mininuscules , 6 chiffres, 2 signes de ponctuations, 3 caractères spéciaux, et 8 lettres
+//23 caractères = 2 Majuscules , 2 mininuscules , 6 chiffres, 2 signes de ponctuations, 3 caractères spéciaux, et 10 lettres + fait pas la fonction getrandomstring
+//2/10 getting special caracters I can create alternative functions to do that, but it's not mandatory now
 void main() {
-  //print(random);
-  //debugPrint(random.nextBool()); //true or false
-  //debugPrint(random.nextInt(75)); // number between 0 - 75
-  //debugPrint(random.nextDouble()); // double value 0.0 to 1.0
-  //var leftTop = const Point(20, 50);
-  //var rightBottom = const Point(300, 600);
-  //var rectangle = Rectangle.fromPoints(leftTop, rightBottom);
-  // debugPrint(rectangle.left); // 20
-  // debugPrint(rectangle.top); // 50
-  // debugPrint(rectangle.right); // 300
-  // debugPrint(rectangle.bottom); // 600
   runApp(const MyApp());
 }
+
+// Define a reusable function
+String generateRandomString(int length) {
+  final _random = Random();
+  const _availableChars =
+      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890&@£%§#*';
+  final randomString = List.generate(length,
+          (index) => _availableChars[_random.nextInt(_availableChars.length)])
+      .join();
+
+  return randomString;
+}
+
+const snackBar = SnackBar(
+  content: Text('The password at been copied to the clipboard !'),
+);
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -61,38 +68,30 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  //var random = Random();
-  int _counter = 0;
+  String _password = "";
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  void randomNumber() {
+  void randomPassword() {
     setState(() {
       var random = Random();
-
-      int min = 10;
-
-      int max = 200;
-
+      //Generate caracters for the password
+      int length = 8;
+      String pass1 = generateRandomString(length);
+      String pass2 = generateRandomString(length);
+      //Generate numbers for the password
+      int min = 100;
+      int max = 999;
       int result = min + random.nextInt(max - min);
-      _counter = result;
+      int result2 = min + random.nextInt(max - min);
+      //concatenation
+
+      String fpassword = pass1 + result.toString() + pass2 + result2.toString();
+      Clipboard.setData(ClipboardData(text: _password));
+      _password = fpassword;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
@@ -124,18 +123,20 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'You have pushed the button this many times:',
+              'Click the button below to generate a secured password and copy it to the clipboard:',
             ),
             Text(
-              '$_counter',
+              _password,
               style: Theme.of(context).textTheme.headline4,
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: randomNumber, // _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: randomPassword,
+
+        // _generate password,
+        tooltip: 'Generating Secure Password',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
